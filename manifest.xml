@@ -3,7 +3,6 @@
 	<name>Tasks Fx</name>
 	<author>Fx</author>
 	<version>2.0</version>
-	<category>bundled</category>
 	<category>content</category>
 	<category>widget</category>
 	<description>Elgg Tasks</description>
@@ -14,5 +13,4 @@
 		<type>elgg_release</type>
 		<version>1.8.3</version>
 	</requires>
-	<activate_on_install>true</activate_on_install>
 </plugin_manifest>

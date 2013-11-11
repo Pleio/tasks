@@ -17,7 +17,7 @@ function tasks_prepare_form_vars($task = null, $parent_guid = 0) {
 		'description' => '',
 		
 		
-		// FXN - Ajout des champs spécifiques, serait mieux autre part en fait
+		// FXN - Ajout des champs spï¿½cifiques, serait mieux autre part en fait
 		'start_date' => '',
 		'end_date' => '',
 		'task_type' => '',
@@ -77,7 +77,7 @@ function tasks_prepare_parent_breadcrumbs($task) {
 
 /**
  * Register the navigation menu
- * 
+ *
  * @param ElggEntity $container Container entity for the tasks
  */
 function tasks_register_navigation_tree($container) {
@@ -89,34 +89,42 @@ function tasks_register_navigation_tree($container) {
 		'type' => 'object',
 		'subtype' => 'task_top',
 		'container_guid' => $container->getGUID(),
+		'limit' => false
 	));
 
-	foreach ($top_tasks as $task) {
-		elgg_register_menu_item('tasks_nav', array(
-			'name' => $task->getGUID(),
-			'text' => $task->title,
-			'href' => $task->getURL(),
-		));
-
-		$stack = array();
-		array_push($stack, $task);
-		while (count($stack) > 0) {
-			$parent = array_pop($stack);
-			$children = elgg_get_entities_from_metadata(array(
-				'type' => 'object',
-				'subtype' => 'task',
-				'metadata_name' => 'parent_guid',
-				'metadata_value' => $parent->getGUID(),
+	if ($top_tasks) {
+		foreach ($top_tasks as $task) {
+			elgg_register_menu_item('tasks_nav', array(
+				'name' => $task->getGUID(),
+				'text' => $task->title,
+				'href' => $task->getURL(),
 			));
-			
-			foreach ($children as $child) {
-				elgg_register_menu_item('tasks_nav', array(
-					'name' => $child->getGUID(),
-					'text' => $child->title,
-					'href' => $child->getURL(),
-					'parent_name' => $parent->getGUID(),
+	
+			$stack = array();
+			array_push($stack, $task);
+			while (count($stack) > 0) {
+				$parent = array_pop($stack);
+				$children = elgg_get_entities_from_metadata(array(
+					'type' => 'object',
+					'subtype' => 'task',
+					'limit' => false,
+					'metadata_name_value_pairs' => array(
+						'name' => 'parent_guid',
+						'value' => $parent->getGUID()
+					)
 				));
-				array_push($stack, $child);
+				
+				if ($children) {
+					foreach ($children as $child) {
+						elgg_register_menu_item('tasks_nav', array(
+							'name' => $child->getGUID(),
+							'text' => $child->title,
+							'href' => $child->getURL(),
+							'parent_name' => $parent->getGUID(),
+						));
+						array_push($stack, $child);
+					}
+				}
 			}
 		}
 	}

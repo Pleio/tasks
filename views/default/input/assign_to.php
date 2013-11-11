@@ -9,7 +9,7 @@
 	$result .= "<select name='assigned_to' id='assigned_to' class='elgg-input-dropdown elgg-input-access'>\n";
 	
 	
-	$result .= "<option value='" . $user->getGUID() . "'>" . elgg_echo("tasks:transfer:myself") . "(" . $user->name .")" . "</option>\n";
+	$result .= "<option value='" . $user->getGUID() . "'>" . elgg_echo("tasks:transfer:myself") . " (" . $user->name .")" . "</option>\n";
 	
 	
 	//$result .= "<optgroup label='" .elgg_echo("groups:owner"). "'>\n";
@@ -23,11 +23,11 @@
 		"relationship_guid" => $user->getGUID(),
 		"limit" => false,
 	);
-	$friends = elgg_get_entities_from_relationship($friends_options); 
+	$friends = elgg_get_entities_from_relationship($friends_options);
 	
 	if(!empty($friends)){
 		$add_friends = false;
-		$friends_block .= "<optgroup label='" . elgg_echo("friends") . "'>\n";
+		$friends_block = "<optgroup label='" . elgg_echo("friends") . "'>\n";
 		
 		foreach($friends as $friend){
 			if($user->getGUID() != $friend->getGUID()){
@@ -46,8 +46,8 @@
 		}
 	}
 	
-	
-	if($vars["entity"] instanceof ElggGroup){ 
+	$container = elgg_extract("entity", $vars);
+	if(elgg_instanceof($container, "group")){
 		
 		$member_options = array(
 			"type" => "user",
@@ -61,7 +61,7 @@
 		if(!empty($members)){
 			$add_members = false;
 			
-			$members_block .= "<optgroup label='" . elgg_echo("groups:members") . "'>\n";
+			$members_block = "<optgroup label='" . elgg_echo("groups:members") . "'>\n";
 			
 			foreach($members as $member){
 				if(($group->getOwner() != $member->getGUID()) && ($user->getGUID() != $member->getGUID())){
@@ -81,6 +81,4 @@
 
 	$result .= "</select>";
 	echo $result;
-		
-
-?>
+	

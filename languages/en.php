@@ -54,6 +54,7 @@ $english = array(
 	'tasks:tags' => 'Tags',
 	'tasks:access_id' => 'Read access',
 	'tasks:write_access_id' => 'Write access',
+	'tasks:transfer:myself' => 'Myself',
 
 	/**
 	 * Status and error messages
