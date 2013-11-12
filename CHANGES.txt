@@ -1,0 +1,13 @@
+= Version History =
+
+x.x:
+
+- added: support for Widget Manager
+- fixed: PHP warnings and notices
+- fixed: Elgg depricated notice
+- fixed: some views not correctly renamed from pages
+- removed: unused views/images
+
+2.0 (2013-04-02):
+
+- latest version of the plugin by FX Nion
