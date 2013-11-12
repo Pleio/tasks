@@ -56,7 +56,8 @@ function tasks_init() {
 	elgg_extend_view('groups/tool_latest', 'tasks/group_module');
 
 	//add a widget
-	elgg_register_widget_type('tasks', elgg_echo('tasks'), elgg_echo('tasks:widget:description'));
+	elgg_register_widget_type('tasks', elgg_echo('tasks'), elgg_echo('tasks:widget:description'), 'dashboard,profile,index,groups');
+	elgg_register_plugin_hook_handler("widget_url", "widget_manager", "tasks_widget_url_handler");
 
 	// Language short codes must be of the form "tasks:key"
 	// where key is the array key below
@@ -175,7 +176,7 @@ function tasks_page_handler($task) {
 
 /**
  * Override the task url
- * 
+ *
  * @param ElggObject $entity Page object
  * @return string
  */
@@ -364,4 +365,39 @@ function tasks_ecml_views_hook($hook, $entity_type, $return_value, $params) {
 	$return_value['object/task_top'] = elgg_echo('item:object:task_top');
 
 	return $return_value;
+}
+
+/**
+ * Return an URL to put on the widget title (for Widget Manager)
+ *
+ * @param string $hook
+ * @param stirng $entity_type
+ * @param string $return_value
+ * @param array $params
+ */
+function tasks_widget_url_handler($hook, $entity_type, $return_value, $params) {
+	$result = $return_value;
+	
+	if (!$result && !empty($params) && is_array($params)) {
+		$widget = elgg_extract("entity", $params);
+	
+		if (!empty($widget) && elgg_instanceof($widget, "object", "widget")) {
+			switch ($widget->handler) {
+				case "tasks":
+					$owner = $widget->getOwnerEntity();
+					
+					if (elgg_instanceof($owner, "site")) {
+						$result = "tasks/all";
+					} elseif (elgg_instanceof($owner, "user")) {
+						$result = "tasks/owner/" . $owner->username;
+					} elseif (elgg_instanceof($owner, "group")) {
+						$result = "tasks/group/" . $owner->GUID() . "/all";
+					}
+					
+					break;
+			}
+		}
+	}
+	
+	return $result;
 }
