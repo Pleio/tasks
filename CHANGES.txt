@@ -3,6 +3,7 @@
 x.x:
 
 - added: support for Widget Manager
+- added: Dutch translation
 - fixed: PHP warnings and notices
 - fixed: Elgg depricated notice
 - fixed: some views not correctly renamed from pages
