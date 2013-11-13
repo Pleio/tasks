@@ -391,7 +391,7 @@ function tasks_widget_url_handler($hook, $entity_type, $return_value, $params) {
 					} elseif (elgg_instanceof($owner, "user")) {
 						$result = "tasks/owner/" . $owner->username;
 					} elseif (elgg_instanceof($owner, "group")) {
-						$result = "tasks/group/" . $owner->GUID() . "/all";
+						$result = "tasks/group/" . $owner->getGUID() . "/all";
 					}
 					
 					break;
